@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, selectContacts } from '../../redux/contactsSlice';
 import s from './ContactForm.module.css';
 import { Form, Field, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -15,16 +15,24 @@ const validationSchema = Yup.object().shape({
 
 function ContactForm() {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts)
+
+  const handleSubmit = (values, { resetForm }) => {
+    const exists = contacts.some(contact => contact.name === values.name); // Проверка по имени
+    if (!exists) {
+      dispatch(addContact({ id: nanoid(), ...values }));
+      resetForm();
+    } else {
+      alert(`${values.name} вже э в контактах!`);
+    }
+  };
 
   return (
     <div className={s.wrapper}>
       <Formik
         initialValues={{ name: '', number: '' }}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(addContact({ id: nanoid(), ...values }));
-          resetForm();
-        }}
+        onSubmit={handleSubmit}
       >
         <Form className={s.form}>
           <label className={s.label}>
