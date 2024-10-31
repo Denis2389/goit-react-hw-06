@@ -1,4 +1,3 @@
-// App.jsx
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact, deleteContact, selectContacts } from './redux/contactsSlice';
