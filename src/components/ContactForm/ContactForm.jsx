@@ -18,7 +18,7 @@ function ContactForm() {
   const contacts = useSelector(selectContacts)
 
   const handleSubmit = (values, { resetForm }) => {
-    const exists = contacts.some(contact => contact.name === values.name); // Проверка по имени
+    const exists = contacts.some(contact => contact.name === values.name);
     if (!exists) {
       dispatch(addContact({ id: nanoid(), ...values }));
       resetForm();
